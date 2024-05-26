@@ -35,6 +35,10 @@ private:
 	// точка сбора должна быть за пространством поиска
 	bool isPointOutsideSA(const POINT& point, const POINT& topLeft, const POINT& bottomRight);
 
+	//для распаралелливания процессов
+	void processEmployees();
+	void processOnlookers();
+
 public:
 
 	Hive();

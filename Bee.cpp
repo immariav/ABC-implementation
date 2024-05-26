@@ -4,9 +4,9 @@ Bee::Bee()
 {
 	this->id = "";
 	this->dancefloor = { 0, 0 };
+	this->currentPosition = { 0, 0 };
 	this->radius = 0;
 	this->newSources = {};
-	this->knownSources = {};
 }
 
 Bee::Bee(const std::string id, POINT& dancefloor, double radius)
@@ -15,7 +15,7 @@ Bee::Bee(const std::string id, POINT& dancefloor, double radius)
 	this->dancefloor = dancefloor;
 	this->radius = radius;
 	this->newSources = {};
-	this->knownSources = {};
+	this->currentPosition = { 0, 0 };
 }
 
 Bee::~Bee()
@@ -31,11 +31,16 @@ void Bee::doWaggleDance(const std::shared_ptr<FoodSource> source)
 {
 	// передача знаний об источнике между пчелами
 	// новый источник заносится в память пчеле с помощью соответствующего метода
+	// передача сообщения типа: первый цвет - количество источников (позволит сразу зарезервировать нужное количество мест в векторе), 
+	// последующие цвета - x, y  источников последовательно
+	// либо же: вместо координат - направление до источника и расстояние до него от текущей точки из памяти, 
+	// а на основе полученной инфы принимающий дрон сам вычисляет его координаты и отправляется
 }
 
 bool Bee::scanNectar()
 {
 	// распознавание нектара
+	// будет сравнивать текущую позицию дрона со списком нектара, который будет передаваться в конструкторы пчел
 	return true; // пока что всегда возвращается true, чтобы комплитяор не ругался
 }
 
@@ -60,10 +65,5 @@ void Bee::processBee()
 void Bee::addSourceToTempMemory(std::shared_ptr<FoodSource> source)
 {
 	this->newSources.push_back(source);
-}
-
-void Bee::addSourceToConstMemory(std::shared_ptr<FoodSource> source)
-{
-	this->knownSources.push_back(source);
 }
 

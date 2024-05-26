@@ -2,6 +2,7 @@
 #include <corecrt_math.h>
 #include <cmath>
 #include <random>
+#include <thread>
 
 Hive::Hive() 
 {
@@ -142,14 +143,38 @@ void Hive::setSearchArea(const POINT& topLeft, const POINT& bottomRight)
 	else {}
 }
 
+// отдельный поток для каждого рабочего
+void Hive::processEmployees()
+{
+	std::vector<std::thread> threads;
+	for (auto& employee : this->employees) {
+		threads.emplace_back(&EmployedBee::processBee, employee.get());
+	}
+	for (auto& thread : threads) {
+		thread.join();
+	}
+}
+
+// отдельный поток для каждого наблюдателя
+void Hive::processOnlookers() 
+{
+	std::vector<std::thread> threads;
+	for (auto& onlooker : this->onlookers) {
+		threads.emplace_back(&OnlookerBee::processBee, onlooker.get());
+	}
+	for (auto& thread : threads) {
+		thread.join();
+	}
+}
+
 void Hive::Solve()
 {
-	do {		
-		for (auto& employee : this->employees) // фаза разведчиков-рабочих
-			employee->processBee();
-		
-		for (auto& onlooker : this->onlookers) // фаза наблюдателей
-			onlooker->processBee();
+	do {
+		std::thread employeeThread(&Hive::processEmployees, this);
+		std::thread onlookerThread(&Hive::processOnlookers, this);
+
+		employeeThread.join(); // запуск всех разведчиков-рабочих
+		onlookerThread.join(); // запуск всех наблюдателей
 
 	} while (this->currentNectarAmount < this->goal); // проверка достижения цели
 }

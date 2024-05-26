@@ -22,6 +22,12 @@ EmployedBee::~EmployedBee()
 {
 }
 
+void EmployedBee::addSourceToConstMemory(std::shared_ptr<FoodSource> source)
+{
+	this->knownSources.push_back(source);
+}
+
+
 void EmployedBee::carryNectar(std::shared_ptr<FoodSource> source, const POINT& point)
 {
 	// взятие нектара из источника
@@ -76,16 +82,17 @@ void EmployedBee::processBee()
 	do
 	{
 		newSource = std::make_shared<FoodSource>(this->generateNewFoodSource(this->searchArea, this->radius)); // генерация нового источника
+		this->knownSources.push_back(newSource);
 		this->moveToPoint(newSource->getLocation()); // разведчик к нему отправляется
 		nectarFound = this->scanNectar();
 		if (!nectarFound) // если на этой точке не найден нектар, то мы ее осматриваем в большем радиусе
 		{
-			auto check = this->localSearch(newSource, this->radius);
+			auto& check = this->localSearch(newSource, this->radius);
 			if (check.size())
 			{
 				for (uint32_t i = 0; i < check.size(); i++)
-				{
-					this->newSources.push_back(std::make_shared<FoodSource>(check[i]));
+				{				
+					this->newSources.push_back(std::make_shared<FoodSource>(check[i]));	
 					this->knownSources.push_back(newSources[i]);
 				}
 				nectarFound = true;
@@ -96,30 +103,46 @@ void EmployedBee::processBee()
 	std::cout << "Employed Bee id " << this->id << " started foraging" << std::endl;
 	do
 	{
+		// на предыдущем этапе у рабочего гарантированно появился источник в памяти
 		this->currentSource = newSources[0];
-		// на предыдущем этапе у рабочего должен был появиться источник в памяти
 		// отправка к источнику
-		this->moveToPoint(this->getCurrentSource()->getLocation());
+		this->moveToPoint(this->currentSource->getLocation());
 		// сразу уносим нектар на точку сбора, потому что после генерации он гарантированно есть на источнике
-		this->carryNectar(this->getCurrentSource(), this->destination);
+		this->carryNectar(this->currentSource, this->destination);
 		// отправка на танцпол
 		this->moveToPoint(this->dancefloor);
 		//передаем информацию о найденном источнике
-		this->doWaggleDance(this->getCurrentSource());
+		this->doWaggleDance(this->currentSource);
 		// возвращаемся к источнику, чтобы продолжить разведку местности вокруг
-		this->moveToPoint(this->getCurrentSource()->getLocation());
+		this->moveToPoint(this->currentSource->getLocation());
+		// теперь также нужно как-то триггерно срабатывать на попытки других дронов исполнить пчелиный танец
 		// локальная разведка
-		auto check = this->localSearch(this->getCurrentSource(), this->radius);
+		auto& check = this->localSearch(this->currentSource, this->radius);
 		if (check.size())
 		{
 			for (uint32_t i = 0; i < check.size(); i++)
+			{
 				this->newSources.push_back(std::make_shared<FoodSource>(check[i]));
+				this->knownSources.push_back(newSources[i]);
+			}
 		}
-		else this->getCurrentSource()->markAsAbandoned();
+		else
+		{
+			for (auto& source : this->knownSources) {
+				if (source->getLocation().x == currentSource->getLocation().x ||
+					source->getLocation().y == currentSource->getLocation().y) 
+				{
+					source->markAsAbandoned(); // Изменение параметра name
+					break; // Прерываем цикл после нахождения нужного элемента
+				}
+			}
+		}
+		// watchWaggleDance();
 		this->newSources.erase(this->newSources.begin());// удаление текущего источника из списка необработанных
 														// и смещение всех элементов на начало
 	} while (this->newSources.size()); //пока есть еще точки, ожидающие сбора нектара
 	// когда больше нечего обрабатывать, итерация этого рабочего закончилась
+	// очистка вектора newSources не требуется, так как условие выхода из цикла - то что он уже пустой
 	std::cout << "Employed Bee id " << this->id << " ended its work" << std::endl;
 }
 

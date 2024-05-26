@@ -13,7 +13,7 @@ protected:
 	POINT dancefloor; // координаты танцпола
 	double radius; // минимальное расстояние между источниками и радиус разведки
 	std::vector<std::shared_ptr<FoodSource>> newSources; // новые источники, которые могут быть найдены в процессе локальной разведки
-	std::vector<std::shared_ptr<FoodSource>> knownSources; // все известные пчеле источники
+	POINT currentPosition; // текущие координаты дрона
 
 public:
 
@@ -33,7 +33,5 @@ public:
 	virtual void processBee();
 	// добавление источника в newSources
 	void addSourceToTempMemory(std::shared_ptr<FoodSource> source);
-	// добавление источника в knownSources
-	void addSourceToConstMemory(std::shared_ptr<FoodSource> source);
 };
 

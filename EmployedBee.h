@@ -6,6 +6,7 @@ class EmployedBee :
 private:
 
     std::pair<POINT, POINT> searchArea;
+    std::vector<std::shared_ptr<FoodSource>> knownSources; // все известные пчеле источники
 
     std::shared_ptr<FoodSource> currentSource;
     POINT destination; // точка сбора материала
@@ -26,6 +27,8 @@ public:
     EmployedBee();
     EmployedBee(const std::string id, POINT& dancefloor, double radius, POINT& destination, std::pair<POINT, POINT>& searchArea);
     ~EmployedBee();
+    //добавление в knownSources
+    void addSourceToConstMemory(std::shared_ptr<FoodSource> source);
     // функция обработки рабочего
     void processBee() override;
 };

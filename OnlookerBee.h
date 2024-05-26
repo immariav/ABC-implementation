@@ -5,9 +5,9 @@ class OnlookerBee :
 {
 private:
     std::shared_ptr<FoodSource> chosenSource;
+    std::vector<std::shared_ptr<FoodSource>> activeSources; // источники, информацию о которых наблюдатель получает на первом этапе выбора
 
     void chooseFoodSource();
-    void addSourceToMemory(std::shared_ptr<FoodSource> source); // добавляем источник в память пчелы
     std::shared_ptr<FoodSource> getChosenSource();
 
 public:
