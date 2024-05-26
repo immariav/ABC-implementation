@@ -50,10 +50,12 @@ std::shared_ptr<FoodSource> OnlookerBee::getChosenSource()
 
 void OnlookerBee::processBee()
 {
+    std::cout << "Onlooker Bee id " << this->id << " started working" << std::endl;
     //на предыдущем этапе память наблюдателя пополняется различными источниками (после выполнения пчелиного танца)
     // или остался еще не обработанный из newSources
     this->chooseFoodSource();
     this->newSources.push_back(this->chosenSource);
+    std::cout << "Onlooker Bee id " << this->id << " chose a source" << std::endl;
     do
     {
         this->moveToPoint(this->getChosenSource()->getLocation());
@@ -71,7 +73,9 @@ void OnlookerBee::processBee()
         this->newSources.erase(this->newSources.begin()); // удаление текущего источника из списка необработанных
                                                             // и смещение всех элементов на начало
     } while (this->newSources.size()); 
+    std::cout << "Onlooker Bee id " << this->id << " ended foraging" << std::endl;
     // когда больше нечего обрабатывать, возвращаемся на танцпол 
     this->moveToPoint(this->dancefloor);
+    std::cout << "Onlooker Bee id " << this->id << " returned to the dancefloor" << std::endl;
 }
 

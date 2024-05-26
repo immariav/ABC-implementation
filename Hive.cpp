@@ -144,8 +144,7 @@ void Hive::setSearchArea(const POINT& topLeft, const POINT& bottomRight)
 
 void Hive::Solve()
 {
-	do {
-		
+	do {		
 		for (auto& employee : this->employees) // фаза разведчиков-рабочих
 			employee->processBee();
 		

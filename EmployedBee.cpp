@@ -70,6 +70,7 @@ FoodSource EmployedBee::generateNewFoodSource(const std::pair<POINT, POINT>& sea
 
 void EmployedBee::processBee()
 {
+	std::cout << "Employed Bee id " << this->id << " started scouting" << std::endl;
 	std::shared_ptr<FoodSource> newSource;
 	bool nectarFound = false; // пока что разведчиком не найден нектар
 	do
@@ -92,6 +93,7 @@ void EmployedBee::processBee()
 			else newSource->markAsAbandoned(); // если в радиусе ничего не найдено, то забрасываем
 		}
 	} while (!nectarFound); // повторяем генерацию, пока разведчик не найдет источник с нектаром
+	std::cout << "Employed Bee id " << this->id << " started foraging" << std::endl;
 	do
 	{
 		this->currentSource = newSources[0];
@@ -118,5 +120,6 @@ void EmployedBee::processBee()
 														// и смещение всех элементов на начало
 	} while (this->newSources.size()); //пока есть еще точки, ожидающие сбора нектара
 	// когда больше нечего обрабатывать, итерация этого рабочего закончилась
+	std::cout << "Employed Bee id " << this->id << " ended its work" << std::endl;
 }
 
