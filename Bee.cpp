@@ -5,6 +5,8 @@ Bee::Bee()
 	this->id = "";
 	this->dancefloor = { 0, 0 };
 	this->radius = 0;
+	this->newSources = {};
+	this->knownSources = {};
 }
 
 Bee::Bee(const std::string id, POINT& dancefloor, double radius)
@@ -13,6 +15,7 @@ Bee::Bee(const std::string id, POINT& dancefloor, double radius)
 	this->dancefloor = dancefloor;
 	this->radius = radius;
 	this->newSources = {};
+	this->knownSources = {};
 }
 
 Bee::~Bee()
@@ -54,7 +57,13 @@ void Bee::processBee()
 {
 }
 
-void Bee::addSourceToMemory(std::shared_ptr<FoodSource> source)
+void Bee::addSourceToTempMemory(std::shared_ptr<FoodSource> source)
 {
+	this->newSources.push_back(source);
+}
+
+void Bee::addSourceToConstMemory(std::shared_ptr<FoodSource> source)
+{
+	this->knownSources.push_back(source);
 }
 

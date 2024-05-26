@@ -56,11 +56,6 @@ FoodSource ScoutBee::generateNewFoodSource(const std::pair<POINT, POINT>& search
 	return newSource;
 }
 
-void ScoutBee::addSourceToMemory(std::shared_ptr<FoodSource> newSource)
-{
-	this->knownSources.push_back(newSource);
-}
-
 void ScoutBee::processBee()
 {
 	std::shared_ptr<FoodSource> newSource;

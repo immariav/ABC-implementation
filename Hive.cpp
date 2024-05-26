@@ -6,7 +6,6 @@
 Hive::Hive() 
 {
 	this->swarmSize = 0;
-	this->scoutsQty = 0;
 	this->onlookersQty = 0;
 	this->employeesQty = 0;
 	this->currentNectarAmount = 0;
@@ -22,21 +21,13 @@ Hive::Hive()
 Hive::~Hive()
 {}
 
-Hive::Hive(uint32_t swarmSize, uint32_t goal)
-{
-	setSwarmSize(swarmSize);
-	setGoal(goal);
-}
-
 void Hive::setSwarmSize(uint32_t size)
 {
 	if (size >= 3)
 	{
 		this->swarmSize = size;
-		this->scoutsQty = 1;
 		this->onlookersQty = static_cast<uint32_t>(trunc(swarmSize / 2));
-		this->employeesQty = swarmSize - this->scoutsQty - this->onlookersQty;
-		this->scouts.reserve(scoutsQty);
+		this->employeesQty = swarmSize - this->onlookersQty;
 		this->onlookers.reserve(onlookersQty);
 		this->employees.reserve(employeesQty);
 	}
@@ -102,15 +93,10 @@ void Hive::initializeDrones(const std::vector<std::string>& droneIds)
 	{
 		for (uint32_t i = 0; i < this->employeesQty; ++i) {
 			this->employees.emplace_back(std::make_unique<EmployedBee>(droneIds[i], this->dancefloor, 
-				this->getMinDistBetweenSources(), this->destinationPoint));
+				this->getMinDistBetweenSources(), this->destinationPoint, this->searchArea));
 		}
 
-		for (uint32_t i = this->employeesQty; i < this->employeesQty + this->scoutsQty; ++i) {
-			this->scouts.emplace_back(std::make_unique<ScoutBee>(droneIds[i], this->dancefloor, 
-			 this->getMinDistBetweenSources(), this->searchArea));
-		}
-
-		for (uint32_t i = this->employeesQty + this->scoutsQty; i < this->employeesQty + this->scoutsQty + this->onlookersQty; ++i) {
+		for (uint32_t i = this->employeesQty; i < this->employeesQty +this->onlookersQty; ++i) {
 			this->onlookers.emplace_back(std::make_unique<OnlookerBee>(droneIds[i], this->dancefloor, 
 				 this->getMinDistBetweenSources()));
 		}
@@ -160,10 +146,7 @@ void Hive::Solve()
 {
 	do {
 		
-		for(auto& scout : this->scouts) // фаза разведчиков
-			scout->processBee();
-		
-		for (auto& employee : this->employees) // фаза рабочих
+		for (auto& employee : this->employees) // фаза разведчиков-рабочих
 			employee->processBee();
 		
 		for (auto& onlooker : this->onlookers) // фаза наблюдателей

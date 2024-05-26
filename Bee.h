@@ -12,6 +12,7 @@ protected:
 	POINT dancefloor; // координаты танцпола
 	double radius; // минимальное расстояние между источниками и радиус разведки
 	std::vector<std::shared_ptr<FoodSource>> newSources; // новые источники, которые могут быть найдены в процессе локальной разведки
+	std::vector<std::shared_ptr<FoodSource>> knownSources; // все известные пчеле источники
 
 public:
 
@@ -29,7 +30,9 @@ public:
 	std::vector<POINT>& localSearch(std::shared_ptr<FoodSource> source, double radius); 
 	// функция обработки пчелы (переопределена для каждого дочернего класса)
 	virtual void processBee();
-	// добавление источника в память (переопределена для каждого дочернего класса, поскольку память представлена по-разному)
-	virtual void addSourceToMemory(std::shared_ptr<FoodSource> source);
+	// добавление источника в newSources
+	void addSourceToTempMemory(std::shared_ptr<FoodSource> source);
+	// добавление источника в knownSources
+	void addSourceToConstMemory(std::shared_ptr<FoodSource> source);
 };
 

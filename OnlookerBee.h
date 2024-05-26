@@ -4,7 +4,6 @@ class OnlookerBee :
     public Bee
 {
 private:
-    std::vector<std::shared_ptr<FoodSource>> knownSources;
     std::shared_ptr<FoodSource> chosenSource;
 
     void chooseFoodSource();

@@ -14,11 +14,9 @@ private:
 
 	uint32_t swarmSize; // размер роя
 	uint32_t onlookersQty; // количество наблюдателей
-	uint32_t scoutsQty; // количество разведчиков
 	uint32_t employeesQty; // количество рабочих
 
 	std::vector<std::unique_ptr<OnlookerBee>> onlookers; // массив указателей на наблюдателей 
-	std::vector<std::unique_ptr<ScoutBee>> scouts; // массив указателей на разведчиков 
 	std::vector<std::unique_ptr<EmployedBee>> employees; // массив указателей на рабочих 
 
 	uint32_t currentNectarAmount; // текущее количество нектара
@@ -40,7 +38,6 @@ private:
 public:
 
 	Hive();
-	Hive(uint32_t swarmSize, uint32_t goal);
 	~Hive();
 
 	void setSwarmSize(uint32_t size);
@@ -56,7 +53,6 @@ public:
 	double getSearchAreaHeight() const;
 	double getMinDistBetweenSources() const;
 	POINT getDancefloorPoint() const;
-	std::set<FoodSource> getKnownSources() const;
 	// функция, которая извне увеличивает текущее число нектара
 	void increaseCurrentNectarAmoiunt();
 

@@ -16,10 +16,6 @@ private:
 
     FoodSource generateNewFoodSource(const std::pair<POINT, POINT>& searchArea, const double minDistance);
 
-    //добавляем источник в память разведчика
-    void addSourceToMemory(std::shared_ptr<FoodSource> newSource);
-    // std::vector<FoodSource> getKnownSources();
-
 public:
 
     using Bee::Bee;

@@ -2,18 +2,18 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib> 
-#include <ctime> 
+#include <random>
+#include <vector>
+#include <memory>
 
 OnlookerBee::OnlookerBee() : Bee()
 {
-    this->knownSources = {};
     this->chosenSource = nullptr;
 }
 
 OnlookerBee::OnlookerBee(const std::string id, POINT& dancefloor, double radius, POINT& destination)
     : Bee(id, dancefloor, radius)
 {
-    this->knownSources = {};
     this->chosenSource = nullptr;
 }
 
@@ -31,7 +31,10 @@ void OnlookerBee::chooseFoodSource()
         }
     }
     // рулеточный отбор из knownSources источника с равными шансами
-    this->chosenSource = activeSources[rand() % knownSources.size()];
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<std::size_t> dist(0, activeSources.size() - 1);
+    this->chosenSource = activeSources[dist(gen)];
     activeSources.clear();
 }
 

@@ -133,14 +133,12 @@
     <ClCompile Include="FoodSource.cpp" />
     <ClCompile Include="Hive.cpp" />
     <ClCompile Include="OnlookerBee.cpp" />
-    <ClCompile Include="ScoutBee.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bee.h" />
     <ClInclude Include="EmployedBee.h" />
     <ClInclude Include="FoodSource.h" />
     <ClInclude Include="OnlookerBee.h" />
-    <ClInclude Include="ScoutBee.h" />
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="Hive.h" />
   </ItemGroup>
