@@ -1,0 +1,3 @@
+/home/immariav/ABC-for-simulation/build/CMakeFiles/ABC-for-simulation.dir
+/home/immariav/ABC-for-simulation/build/CMakeFiles/edit_cache.dir
+/home/immariav/ABC-for-simulation/build/CMakeFiles/rebuild_cache.dir

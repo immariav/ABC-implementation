@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/immariav/ABC-for-simulation/build",
+  "command": "/usr/bin/c++  -I/home/immariav/ABC-for-simulation/include -g -std=gnu++14 -o CMakeFiles/ABC-for-simulation.dir/src/main.cpp.o -c /home/immariav/ABC-for-simulation/src/main.cpp",
+  "file": "/home/immariav/ABC-for-simulation/src/main.cpp"
+},
+{
+  "directory": "/home/immariav/ABC-for-simulation/build",
+  "command": "/usr/bin/c++  -I/home/immariav/ABC-for-simulation/include -g -std=gnu++14 -o CMakeFiles/ABC-for-simulation.dir/src/Bee.cpp.o -c /home/immariav/ABC-for-simulation/src/Bee.cpp",
+  "file": "/home/immariav/ABC-for-simulation/src/Bee.cpp"
+},
+{
+  "directory": "/home/immariav/ABC-for-simulation/build",
+  "command": "/usr/bin/c++  -I/home/immariav/ABC-for-simulation/include -g -std=gnu++14 -o CMakeFiles/ABC-for-simulation.dir/src/EmployedBee.cpp.o -c /home/immariav/ABC-for-simulation/src/EmployedBee.cpp",
+  "file": "/home/immariav/ABC-for-simulation/src/EmployedBee.cpp"
+},
+{
+  "directory": "/home/immariav/ABC-for-simulation/build",
+  "command": "/usr/bin/c++  -I/home/immariav/ABC-for-simulation/include -g -std=gnu++14 -o CMakeFiles/ABC-for-simulation.dir/src/OnlookerBee.cpp.o -c /home/immariav/ABC-for-simulation/src/OnlookerBee.cpp",
+  "file": "/home/immariav/ABC-for-simulation/src/OnlookerBee.cpp"
+},
+{
+  "directory": "/home/immariav/ABC-for-simulation/build",
+  "command": "/usr/bin/c++  -I/home/immariav/ABC-for-simulation/include -g -std=gnu++14 -o CMakeFiles/ABC-for-simulation.dir/src/FoodSource.cpp.o -c /home/immariav/ABC-for-simulation/src/FoodSource.cpp",
+  "file": "/home/immariav/ABC-for-simulation/src/FoodSource.cpp"
+},
+{
+  "directory": "/home/immariav/ABC-for-simulation/build",
+  "command": "/usr/bin/c++  -I/home/immariav/ABC-for-simulation/include -g -std=gnu++14 -o CMakeFiles/ABC-for-simulation.dir/src/Hive.cpp.o -c /home/immariav/ABC-for-simulation/src/Hive.cpp",
+  "file": "/home/immariav/ABC-for-simulation/src/Hive.cpp"
+}
+]

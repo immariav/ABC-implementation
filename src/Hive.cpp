@@ -1,5 +1,4 @@
 #include "Hive.h"
-#include <corecrt_math.h>
 #include <cmath>
 #include <random>
 #include <thread>
@@ -90,7 +89,7 @@ void Hive::increaseCurrentNectarAmoiunt()
 
 void Hive::initializeDrones(const std::vector<std::string>& droneIds)
 {
-	if (this->swarmSize) // проверка на то, что размер роя уже был задан
+	if (this->swarmSize) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	{
 		for (uint32_t i = 0; i < this->employeesQty; ++i) {
 			this->employees.emplace_back(std::make_unique<EmployedBee>(droneIds[i], this->dancefloor, 
@@ -106,20 +105,20 @@ void Hive::initializeDrones(const std::vector<std::string>& droneIds)
 
 bool Hive::isValidSearchArea(double xTopLeft, double yTopLeft, double xBottomRight, double yBottomRight)
 {
-	// левый x должен быть меньше правого, иначе прямоугольник пустой или некорректно задан. аналогично верхний y должен быть больше нижнего
+	// пїЅпїЅпїЅпїЅпїЅ x пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ y пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if (xTopLeft >= xBottomRight || yTopLeft <= yBottomRight) {
-		return false; // некорректные координаты
+		return false; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	}
-	return true; // проверки пройдены успешно
+	return true; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 }
 
 bool Hive::isPointOutsideSA(const POINT& point, const POINT& topLeft, const POINT& bottomRight)
 {
-	// проверяем, что точка не лежит внутри прямоугольника
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	return point.x < topLeft.x || point.x > bottomRight.x || point.y > topLeft.y || point.y < bottomRight.y;
 }
 
-// сначала x, y левой верхней точки; потом x, y правой нижней точки
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ x, y пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ; пїЅпїЅпїЅпїЅпїЅ x, y пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 void Hive::setSearchArea(double xTopLeft, double yTopLeft, double xBottomRight, double yBottomRight)
 {
 	if (isValidSearchArea(xTopLeft, yTopLeft, xBottomRight, yBottomRight))
@@ -132,7 +131,7 @@ void Hive::setSearchArea(double xTopLeft, double yTopLeft, double xBottomRight, 
 	else {}
 }
 
-// сначала левая верхняя точка; потом правая нижняя точка
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ; пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 void Hive::setSearchArea(const POINT& topLeft, const POINT& bottomRight)
 {
 	if(isValidSearchArea(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y))
@@ -143,7 +142,7 @@ void Hive::setSearchArea(const POINT& topLeft, const POINT& bottomRight)
 	else {}
 }
 
-// отдельный поток для каждого рабочего
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 void Hive::processEmployees()
 {
 	std::vector<std::thread> threads;
@@ -155,7 +154,7 @@ void Hive::processEmployees()
 	}
 }
 
-// отдельный поток для каждого наблюдателя
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 void Hive::processOnlookers() 
 {
 	std::vector<std::thread> threads;
@@ -173,9 +172,9 @@ void Hive::Solve()
 		std::thread employeeThread(&Hive::processEmployees, this);
 		std::thread onlookerThread(&Hive::processOnlookers, this);
 
-		employeeThread.join(); // запуск всех разведчиков-рабочих
-		onlookerThread.join(); // запуск всех наблюдателей
+		employeeThread.join(); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		onlookerThread.join(); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-	} while (this->currentNectarAmount < this->goal); // проверка достижения цели
+	} while (this->currentNectarAmount < this->goal); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 }
 

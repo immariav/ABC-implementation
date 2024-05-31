@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/ABC-for-simulation.dir/src/main.cpp.o CMakeFiles/ABC-for-simulation.dir/src/Bee.cpp.o CMakeFiles/ABC-for-simulation.dir/src/EmployedBee.cpp.o CMakeFiles/ABC-for-simulation.dir/src/OnlookerBee.cpp.o CMakeFiles/ABC-for-simulation.dir/src/FoodSource.cpp.o CMakeFiles/ABC-for-simulation.dir/src/Hive.cpp.o -o ABC-for-simulation 
