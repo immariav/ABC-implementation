@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/ABC-implementation.dir/src/main.cpp.o CMakeFiles/ABC-implementation.dir/src/Bee.cpp.o CMakeFiles/ABC-implementation.dir/src/EmployedBee.cpp.o CMakeFiles/ABC-implementation.dir/src/FoodSource.cpp.o CMakeFiles/ABC-implementation.dir/src/OnlookerBee.cpp.o CMakeFiles/ABC-implementation.dir/src/Hive.cpp.o -o ABC-implementation 
