@@ -7,6 +7,12 @@ project(ABC-implementation VERSION 1.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+find_package(MAVLink REQUIRED)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(~/mavlink/install/include)
+include_directories(/usr/include/mavsdk)
+
 # Add the executable
 add_executable(ABC-implementation
     src/main.cpp     
@@ -15,17 +21,4 @@ add_executable(ABC-implementation
     src/FoodSource.cpp
     src/OnlookerBee.cpp
     src/Hive.cpp
-    include/Bee.h
-    include/EmployedBee.h
-    include/OnlookerBee.h
-    include/FoodSource.h
-    include/Hive.h
-    include/Shapes.h
 )
-
-# Include directories
-target_include_directories(ABC-implementation PUBLIC "${PROJECT_SOURCE_DIR}/include")
-
-# Optionally, you can add link libraries if your project depends on external libraries
-# For example:
-# target_link_libraries(ABC-implementation PRIVATE some_library)

@@ -1,6 +1,5 @@
 #pragma once
 #include "Bee.h"
-#include "../src/Bee.cpp"
 class OnlookerBee : public Bee
 {
 private:

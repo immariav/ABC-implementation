@@ -15,12 +15,12 @@ private:
 public:
 
 	FoodSource();
-	FoodSource(POINT point);
+	FoodSource(const POINT& point);
 	~FoodSource();
 
 	void markAsAbandoned();
 
-	POINT getLocation() const;
+	const POINT& getLocation() const;
 
 	//true - abandoned, false - active
 	bool getAbandonedStatus();

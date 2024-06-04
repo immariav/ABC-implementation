@@ -10,7 +10,7 @@ private:
     POINT destination; // ����� ����� ���������
 
     //����� ����� ������ �� �����
-    void carryNectar(std::shared_ptr<FoodSource> source, const POINT& point); // (������, ����)
+    void carryNectar(std::shared_ptr<FoodSource> source, const POINT point); // (������, ����)
     std::shared_ptr<FoodSource> getCurrentSource();
 
     //���������� ��������� ���������� ����� ����� �������
@@ -23,7 +23,7 @@ public:
 
     using Bee::Bee;
     EmployedBee();
-    EmployedBee(const std::string& id, POINT& dancefloor, double radius, POINT& destination, std::pair<POINT, POINT>& searchArea);
+    EmployedBee(const std::string& id, const POINT& dancefloor, double radius, const POINT& destination, const std::pair<POINT, POINT>& searchArea);
     ~EmployedBee() override;
     //���������� � knownSources
     void addSourceToConstMemory(std::shared_ptr<FoodSource> source);

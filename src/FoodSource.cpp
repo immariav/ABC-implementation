@@ -1,5 +1,4 @@
-#pragma once
-#include "../include/FoodSource.h"
+#include "FoodSource.h"
 
 FoodSource::FoodSource()
 {
@@ -8,7 +7,7 @@ FoodSource::FoodSource()
 	this->location.y = 0;
 }
 
-FoodSource::FoodSource(POINT point)
+FoodSource::FoodSource(const POINT& point)
 {
 	this->isAbandoned = false;
 	this->location = point;
@@ -23,7 +22,7 @@ void FoodSource::markAsAbandoned()
 	this->isAbandoned = true;
 }
 
-POINT FoodSource::getLocation() const
+const POINT& FoodSource::getLocation() const
 {
 	return this->location;
 }

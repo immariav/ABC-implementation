@@ -838,6 +838,18 @@
 			"value" : "1"
 		},
 		{
+			"name" : "CMAKE_PREFIX_PATH",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "No help, variable specified on the command line."
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : "/usr/include/mavsdk"
+		},
+		{
 			"name" : "CMAKE_PROJECT_DESCRIPTION",
 			"properties" : 
 			[
@@ -1212,6 +1224,18 @@
 			],
 			"type" : "BOOL",
 			"value" : "FALSE"
+		},
+		{
+			"name" : "MAVLink_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for MAVLink."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/home/immariav/mavlink/install/lib/cmake/MAVLink"
 		}
 	],
 	"kind" : "cache",

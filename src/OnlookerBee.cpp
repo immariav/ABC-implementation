@@ -1,12 +1,10 @@
-#pragma once
 #include <iostream>
 #include <vector>
 #include <cstdlib> 
 #include <random>
 #include <vector>
 #include <memory>
-#include "../include/OnlookerBee.h"
-#include "../src/Bee.cpp"
+#include "OnlookerBee.h"
 
 OnlookerBee::OnlookerBee()
     : Bee(), chosenSource(nullptr) {}
@@ -47,7 +45,7 @@ void OnlookerBee::processBee()
     std::cout << "Onlooker Bee id " << this->id << " chose a source" << std::endl;
     
     while (!newSources.empty()) {
-        moveToPoint(chosenSource->getLocation());
+ //       moveToPoint(chosenSource->getLocation());
         auto& check = localSearch(chosenSource, radius * 1.5);
 
         if (!check.empty()) {
@@ -55,7 +53,7 @@ void OnlookerBee::processBee()
                 auto newFoodSource = std::make_shared<FoodSource>(point);
                 newSources.push_back(newFoodSource);
             }
-            moveToPoint(chosenSource->getLocation());
+ //           moveToPoint(chosenSource->getLocation());
             for (const auto& source : newSources) {
                 doWaggleDance(source);
             }
@@ -71,7 +69,7 @@ void OnlookerBee::processBee()
     
     std::cout << "Onlooker Bee id " << this->id << " ended foraging" << std::endl;
     // ����� ������ ������ ������������, ������������ �� ������� 
-    this->moveToPoint(this->dancefloor);
+ //   this->moveToPoint(this->dancefloor);
     std::cout << "Onlooker Bee id " << this->id << " returned to the dancefloor" << std::endl;
 }
 

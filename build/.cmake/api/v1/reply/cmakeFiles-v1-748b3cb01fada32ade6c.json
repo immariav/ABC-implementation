@@ -120,6 +120,14 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "/usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/immariav/mavlink/install/lib/cmake/MAVLink/MAVLinkConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/immariav/mavlink/install/lib/cmake/MAVLink/MAVLinkTargets.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",

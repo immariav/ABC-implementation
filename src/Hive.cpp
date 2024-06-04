@@ -1,8 +1,8 @@
-#pragma once
-#include "../include/Hive.h"
+#include "Hive.h"
 #include <cmath>
 #include <random>
 #include <thread>
+#include <chrono>
 
 Hive::Hive() 
 {
@@ -44,7 +44,7 @@ void Hive::setGoal(uint32_t goal)
 
 void Hive::setDestinationPoint(double x, double y)
 {
-	if(isPointOutsideSA({ x, y }, this->getSearchAreaTopLeft(), this->getSearchAreaBottomRight()))
+	if(!isPointOutsideSA({ x, y }, this->getSearchAreaTopLeft(), this->getSearchAreaBottomRight()))
 		this->destinationPoint = { x, y };
 }
 
@@ -170,13 +170,19 @@ void Hive::processOnlookers()
 
 void Hive::Solve()
 {
+	auto begin = std::chrono::steady_clock::now();
+	uint32_t iterationsAmount;
 	do {
+		iterationsAmount++;
 		std::thread employeeThread(&Hive::processEmployees, this);
 		std::thread onlookerThread(&Hive::processOnlookers, this);
 
 		employeeThread.join(); // ������ ���� �����������-�������
 		onlookerThread.join(); // ������ ���� ������������
 
-	} while (this->currentNectarAmount < this->goal); // �������� ���������� ����
+	} while (currentNectarAmount < goal); // �������� ���������� ����
+	auto end = std::chrono::steady_clock::now();
+	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+	std::cout << "The time: " << elapsed_ms.count() << " ms\n";
 }
 

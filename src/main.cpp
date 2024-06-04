@@ -1,13 +1,13 @@
 ﻿#include <iostream>
-#include "../src/Hive.cpp"
+#include "Hive.h"
 
-int main()
-{
-    Hive hive;
-    hive.setSwarmSize(50);
-    hive.setGoal(900);
-    hive.setSearchArea({1000, 0}, {0, 500});
-    hive.setDestinationPoint(-50, -50);
+// int main()
+// {
+//     Hive hive;
+//     hive.setSwarmSize(5);
+//     hive.setGoal(20);
+//     hive.setSearchArea({-35.36043975, 149.15909315}, {-35.36337074, 149.16383840});
+//     hive.setDestinationPoint(-35.36043977, 149.15909315);
 
-    hive.Solve();
-}
+//     hive.Solve();
+// }

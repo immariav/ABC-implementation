@@ -1,14 +1,11 @@
-#pragma once
-#include "../include/EmployedBee.h"
-#include "../src/Bee.cpp"
-#include "../src/FoodSource.cpp"
+#include "EmployedBee.h"
 #include <cmath>
 #include <random>
 
 EmployedBee::EmployedBee()
     : Bee(), searchArea{{0, 0}, {0, 0}}, destination{0, 0}, currentSource(nullptr) {}
 
-EmployedBee::EmployedBee(const std::string& id, POINT& dancefloor, double radius, POINT& destination, std::pair<POINT, POINT>& searchArea)
+EmployedBee::EmployedBee(const std::string& id, const POINT& dancefloor, double radius, const POINT& destination, const std::pair<POINT, POINT>& searchArea)
     : Bee(id, dancefloor, radius), destination(destination), searchArea(searchArea), currentSource(nullptr) {}
 
 EmployedBee::~EmployedBee() {}
@@ -18,10 +15,10 @@ void EmployedBee::addSourceToConstMemory(std::shared_ptr<FoodSource> source)
 	this->knownSources.push_back(source);
 }
 
-void EmployedBee::carryNectar(std::shared_ptr<FoodSource> source, const POINT& point)
+void EmployedBee::carryNectar(std::shared_ptr<FoodSource> source, const POINT point)
 {
 	// ������ ������� �� ���������
-	moveToPoint(point);
+	//moveToPoint(point);
 	// ����� �������
 }
 
@@ -64,46 +61,47 @@ FoodSource EmployedBee::generateNewFoodSource(const std::pair<POINT, POINT>& sea
 
 void EmployedBee::processBee()
 {
+	// drone is already armed and flying
 	std::cout << "Employed Bee id " << this->id << " started scouting" << std::endl;
 	std::shared_ptr<FoodSource> newSource;
-	bool nectarFound = false; // ���� ��� ����������� �� ������ ������
+	bool nectarFound = false; // it is not found yet
 	do
 	{
 		newSource = std::make_shared<FoodSource>(this->generateNewFoodSource(this->searchArea, this->radius)); // ��������� ������ ���������
 		this->knownSources.push_back(newSource);
-		this->moveToPoint(newSource->getLocation()); // ��������� � ���� ������������
-		nectarFound = this->scanNectar();
-		if (!nectarFound) // ���� �� ���� ����� �� ������ ������, �� �� �� ����������� � ������� �������
+		moveToPoint(this->sock, this->addr, newSource->getLocation()); // going to the generated point
+		nectarFound = this->scanNectar(); // check if it is a source itself
+		if (!nectarFound) // if not, flying around and trying to find nectar
 		{
-			auto& check = this->localSearch(newSource, this->radius);
-			if (!check.empty())
+			auto& check = this->localSearch(newSource, this->radius); // vector of the nectar sources found during local search
+			if (!check.empty()) // if not empty
 			{
                 for (const auto& point : check) {
                     auto newFoodSource = std::make_shared<FoodSource>(point);
-                    newSources.push_back(newFoodSource);
-                    knownSources.push_back(newFoodSource);
+                    newSources.push_back(newFoodSource); // add to the temporary memory
+                    knownSources.push_back(newFoodSource); // and to the const 
                 }
 				nectarFound = true;
 			}
-			else newSource->markAsAbandoned(); // ���� � ������� ������ �� �������, �� �����������
+			else newSource->markAsAbandoned(); // if no nectar then this source is empty on the whole radius
 		}
-	} while (!nectarFound); // ��������� ���������, ���� ��������� �� ������ �������� � ��������
+	} while (!nectarFound); // repeat until it finds anything
 
 
 	std::cout << "Employed Bee id " << this->id << " started foraging" << std::endl;
-	    while (!newSources.empty()) {
-        currentSource = newSources.front();
-        moveToPoint(currentSource->getLocation());
-        carryNectar(currentSource, destination);
-        moveToPoint(dancefloor);
+	while (!newSources.empty()) {
+        currentSource = newSources.front(); // working on the first of the found
+		moveToPoint(this->sock, this->addr, currentSource->getLocation()); // going to the chosen point
+//		carryNectar(currentSource, destination);
+ //       moveToPoint(dancefloor);
         doWaggleDance(currentSource);
-		moveToPoint(currentSource->getLocation());
+//		moveToPoint(currentSource->getLocation());
         auto& check = localSearch(currentSource, radius);
         for (const auto& point : check) {
             auto newFoodSource = std::make_shared<FoodSource>(point);
             newSources.push_back(newFoodSource);
             knownSources.push_back(newFoodSource);
-        }
+    	}
 
         newSources.erase(newSources.begin());
     }

@@ -1,8 +1,8 @@
 #pragma once
 #include <cstdint>
 #include <string>
-#include "../src/EmployedBee.cpp"
-#include "../src/OnlookerBee.cpp"
+#include "EmployedBee.h"
+#include "OnlookerBee.h"
 #include <utility>
 #include <memory>
 
@@ -36,6 +36,9 @@ private:
 	//��� ����������������� ���������
 	void processEmployees();
 	void processOnlookers();
+
+	//
+	void generateRandomFoodSources(uint32_t n);
 
 public:
 
