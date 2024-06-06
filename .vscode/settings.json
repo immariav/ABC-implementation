@@ -58,6 +58,10 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeindex": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "condition_variable": "cpp",
+        "list": "cpp",
+        "fstream": "cpp",
+        "mutex": "cpp"
     }
 }

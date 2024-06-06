@@ -10,8 +10,6 @@
                 "-g",
                 "-I${workspaceFolder}/include",
                 "${workspaceFolder}/src/*.cpp",
-                "-I/usr/include/mavsdk",
-                "-Wno-address-of-packed-member",
                 "-o",
                 //"${workspaceFolder}/build/ABC-implementation"
                 "${workspaceFolder}/build/test"
