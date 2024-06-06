@@ -1,3 +1,0 @@
-/home/immariav/ABC-implementation/build/CMakeFiles/ABC-implementation.dir
-/home/immariav/ABC-implementation/build/CMakeFiles/edit_cache.dir
-/home/immariav/ABC-implementation/build/CMakeFiles/rebuild_cache.dir
