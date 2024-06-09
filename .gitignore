@@ -315,6 +315,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+*.pyo
 
 # Cake - Uncomment if you are using it
 # tools/**
@@ -361,3 +362,34 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Python Virtual env
+src/drone_control/venv/
+
+# Ignore object files, executables, and other temporary files
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+*.dylib
+
+# Ignore dependency files
+*.d
+
+# Ignore build directories
+build/
+bin/
+lib/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore core dumps
+core
+*.core
+
+.vscode/

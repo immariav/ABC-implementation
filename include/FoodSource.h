@@ -9,7 +9,7 @@ class FoodSource
 {
 private:
 
-	bool isAbandoned;
+	//bool isAbandoned;
 	POINT location;
 
 public:
@@ -23,6 +23,6 @@ public:
 	const POINT& getLocation() const;
 
 	//true - abandoned, false - active
-	bool getAbandonedStatus();
+	//bool getAbandonedStatus();
 };
 

@@ -1,0 +1,24 @@
+employed:
+1. generates a source
+2. waggle dance
+3. go to source
+4. check nectar
+5. if found - carry nectar
+6. local search
+7. meet at the point
+8. watch waggla dance
+9. do waggle dance
+10. go next
+11. if empty then do everything again
+
+onlooker:
+1. search for the employee
+2. watch waggle dance
+3. go to the source together
+4. start local search
+5. go to the point and when it returns do waggle dance
+6. watch waggle dance
+7. go to the next source
+8. if empty then follow
+
+

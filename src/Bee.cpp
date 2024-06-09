@@ -1,26 +1,29 @@
 #include "Bee.h"
 
-Bee::Bee()
-    : id(""), dancefloor{0, 0}, radius(0), currentPosition{0, 0} {
-
-}
-
-Bee::Bee(const std::string& id, const POINT& dancefloor, double radius)
-    : id(id), dancefloor(dancefloor), radius(radius), currentPosition{0, 0} {
+Bee::Bee(const int id) : id(id) {
+    //create pipes
+    create_named_pipes(id);
+    //arm and takeoff
     
 }
 
 Bee::~Bee() {
+    //destroy pipes
+    close_named_pipes(id);
 }
 
-void Bee::moveToPoint(int sock, const sockaddr_in& addr, const POINT& point)
+void Bee::moveToPoint(const POINT &point)
 {
 
 }
 
-void Bee::doWaggleDance(const std::shared_ptr<FoodSource> source)
+void Bee::doWaggleDance(std::vector<std::shared_ptr<FoodSource>> sourcesToShare)
 {
 	
+}
+
+void Bee::watchWaggleDance()
+{
 }
 
 bool Bee::scanNectar()
@@ -29,13 +32,41 @@ bool Bee::scanNectar()
 	return false; 
 }
 
-std::vector<POINT>& Bee::localSearch(std::shared_ptr<FoodSource> source, double radius)
+// genenerates points for local search
+std::vector<POINT> Bee::spiral_points(const POINT& center, const double step)
 {
-    static std::vector<POINT> points = {}; // Placeholder, replace with actual implementation
+    std::vector<POINT> points;
+    double angle = 0;
+    double r = 0;
+    while (r <= radius) {
+        double x = center.x + r * cos(angle);
+        double y = center.y + r * sin(angle);
+        points.push_back({x, y});
+        angle += step / (r != 0 ? r : step);
+        r = angle * step / (2 * M_PI);
+    }
     return points;
 }
 
-void Bee::addSourceToTempMemory(std::shared_ptr<FoodSource> source)
+std::vector<POINT>& Bee::localSearch(const POINT& location, double radius)
 {
-	this->newSources.push_back(source);
+    std::vector<POINT> points = spiral_points(location, radius);
+
+    // Отправляем вектор точек в именованный канал Python
+    send_vector_to_python(id, points);
+
+    
+
+    // Получаем результат из именованного канала Python
+    std::vector<int> output_coordinates = receive_vector_from_python(id);
+
+    // Преобразуем полученные координаты обратно в POINT и сохраняем их в выходном векторе
+    std::vector<POINT> output_points;
+    for (const auto& coordinate : output_coordinates) {
+        POINT point;
+        // Преобразуйте coordinate в POINT
+        output_points.push_back(point);
+    }
+
+    return output_points;
 }

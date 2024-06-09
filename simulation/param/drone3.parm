@@ -1,0 +1,6 @@
+SYSID_THISMAV 3
+SERIAL0_PROTOCOL 2  # MAVLink2 on the console
+SERIAL1_PROTOCOL 1  # MAVLink1 on the first telemetry port
+LOG_DISARMED 1
+ARMING_CHECK 0
+

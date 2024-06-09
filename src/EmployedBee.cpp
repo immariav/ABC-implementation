@@ -2,18 +2,15 @@
 #include <cmath>
 #include <random>
 
-EmployedBee::EmployedBee()
-    : Bee(), searchArea{{0, 0}, {0, 0}}, destination{0, 0}, currentSource(nullptr) {}
 
-EmployedBee::EmployedBee(const std::string& id, const POINT& dancefloor, double radius, const POINT& destination, const std::pair<POINT, POINT>& searchArea)
-    : Bee(id, dancefloor, radius), destination(destination), searchArea(searchArea), currentSource(nullptr) {}
+EmployedBee::EmployedBee(const int id) : Bee(id){}
 
 EmployedBee::~EmployedBee() {}
 
-void EmployedBee::addSourceToConstMemory(std::shared_ptr<FoodSource> source)
-{
-	this->knownSources.push_back(source);
-}
+// void EmployedBee::addSourceToConstMemory(std::shared_ptr<FoodSource> source)
+// {
+// 	this->knownSources.push_back(source);
+// }
 
 void EmployedBee::carryNectar(std::shared_ptr<FoodSource> source, const POINT point)
 {
@@ -22,9 +19,9 @@ void EmployedBee::carryNectar(std::shared_ptr<FoodSource> source, const POINT po
 	// ����� �������
 }
 
-std::shared_ptr<FoodSource> EmployedBee::getCurrentSource()
+bool EmployedBee::checkNectar()
 {
-	return this->currentSource;
+    return false;
 }
 
 double EmployedBee::distance(const POINT& p1, const POINT& p2)
@@ -36,13 +33,13 @@ bool EmployedBee::isValidPoint(const POINT& newPoint, const std::vector<std::sha
 {
 	for (const auto& source : sources) {
 		if (distance(newPoint, source->getLocation()) < minDistance) {
-			return false; // ����� ������� ������ � ������ �����
+			return false; // 
 		}
 	}
-	return true; // ����� ��������� �� ����������� ���������� �� ���� �����
+	return true; // 
 }
 
-FoodSource EmployedBee::generateNewFoodSource(const std::pair<POINT, POINT>& searchArea, const double minDistance)
+FoodSource EmployedBee::generateNewFoodSource(const std::pair<POINT, POINT>& searchArea, const double radius)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -54,57 +51,48 @@ FoodSource EmployedBee::generateNewFoodSource(const std::pair<POINT, POINT>& sea
 	{
 		newPoint = { distX(gen), distY(gen) };
 
-	} while (!isValidPoint(newPoint, this->knownSources, minDistance));
+	} while (!isValidPoint(newPoint, this->knownSources, radius * sqrt(2)));
 
 	return FoodSource (newPoint);
+}
+
+std::vector<POINT> &EmployedBee::localSearch(const POINT &, double radius)
+{
+        static std::vector<POINT> points = {}; // Placeholder, replace with actual implementation
+	// move to the this->currentSource->getLocation();
+    return points;
 }
 
 void EmployedBee::processBee()
 {
 	// drone is already armed and flying
 	std::cout << "Employed Bee id " << this->id << " started scouting" << std::endl;
-	std::shared_ptr<FoodSource> newSource;
-	bool nectarFound = false; // it is not found yet
-	do
+	
+	std::shared_ptr<FoodSource> newSource =
+	std::make_shared<FoodSource>(generateNewFoodSource(searchArea, radius)); 
+	this->knownSources.push_back(newSource);
+	this->sourcesToCheck.push_back(newSource);
+	currentSource = newSource;
+	doWaggleDance(sourcesToCheck); //newSource (сагитировал наблюдателя)
+//	moveToPoint(currentSource->getLocation()); // going to the generated point
+	
+	while (!sourcesToCheck.empty())
 	{
-		newSource = std::make_shared<FoodSource>(this->generateNewFoodSource(this->searchArea, this->radius)); // ��������� ������ ���������
-		this->knownSources.push_back(newSource);
-		moveToPoint(this->sock, this->addr, newSource->getLocation()); // going to the generated point
-		nectarFound = this->scanNectar(); // check if it is a source itself
-		if (!nectarFound) // if not, flying around and trying to find nectar
-		{
-			auto& check = this->localSearch(newSource, this->radius); // vector of the nectar sources found during local search
-			if (!check.empty()) // if not empty
-			{
-                for (const auto& point : check) {
-                    auto newFoodSource = std::make_shared<FoodSource>(point);
-                    newSources.push_back(newFoodSource); // add to the temporary memory
-                    knownSources.push_back(newFoodSource); // and to the const 
-                }
-				nectarFound = true;
-			}
-			else newSource->markAsAbandoned(); // if no nectar then this source is empty on the whole radius
-		}
-	} while (!nectarFound); // repeat until it finds anything
+		moveToPoint(currentSource->getLocation());
 
+		if(checkNectar())
+			carryNectar(newSource, destination);
+		
+		localSearch(this->currentSource->getLocation(), this->radius); 
 
-	std::cout << "Employed Bee id " << this->id << " started foraging" << std::endl;
-	while (!newSources.empty()) {
-        currentSource = newSources.front(); // working on the first of the found
-		moveToPoint(this->sock, this->addr, currentSource->getLocation()); // going to the chosen point
-//		carryNectar(currentSource, destination);
- //       moveToPoint(dancefloor);
-        doWaggleDance(currentSource);
-//		moveToPoint(currentSource->getLocation());
-        auto& check = localSearch(currentSource, radius);
-        for (const auto& point : check) {
-            auto newFoodSource = std::make_shared<FoodSource>(point);
-            newSources.push_back(newFoodSource);
-            knownSources.push_back(newFoodSource);
-    	}
+		watchWaggleDance(); // waiting on the point
 
-        newSources.erase(newSources.begin());
-    }
+		doWaggleDance(sourcesToShare);
+
+		sourcesToCheck.erase(sourcesToCheck.begin());
+		currentSource = sourcesToCheck.front();
+	}
+
 	std::cout << "Employed Bee id " << this->id << " ended its work" << std::endl;
 }
 

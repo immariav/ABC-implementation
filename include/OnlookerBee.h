@@ -3,19 +3,17 @@
 class OnlookerBee : public Bee
 {
 private:
-    std::shared_ptr<FoodSource> chosenSource;
-    std::vector<std::shared_ptr<FoodSource>> activeSources; // ���������, ���������� � ������� ����������� �������� �� ������ ����� ������
+   // fields
 
-    void chooseFoodSource();
-    std::shared_ptr<FoodSource> getChosenSource();
+    virtual std::vector<POINT>& localSearch(const POINT&, double radius);
 
 public:
 
     using Bee::Bee;
-    OnlookerBee();
-    OnlookerBee(const std::string& id, POINT& dancefloor, double radius);
+    OnlookerBee(const int id);
     ~OnlookerBee() override;
-    // ������� ��������� �����������
+    
+
     void processBee() override;
 };
 
