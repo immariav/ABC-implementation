@@ -26,20 +26,20 @@ void DroneLauncher::start_sitl_instance() {
 }
 
 
-int main() {
-    std::cout << "Enter the number of drones: ";
-    int num_drones;
-    std::cin >> num_drones;
+// int main() {
+//     std::cout << "Enter the number of drones: ";
+//     int num_drones;
+//     std::cin >> num_drones;
 
-    std::vector<std::thread> threads;
-    for (int i = 0; i < num_drones; ++i) {
-        DroneLauncher launcher(i);
-        threads.emplace_back(&DroneLauncher::launch, launcher);
-    }
+//     std::vector<std::thread> threads;
+//     for (int i = 0; i < num_drones; ++i) {
+//         DroneLauncher launcher(i);
+//         threads.emplace_back(&DroneLauncher::launch, launcher);
+//     }
 
-    for (auto &thread : threads) {
-        thread.join();
-    }
+//     for (auto &thread : threads) {
+//         thread.join();
+//     }
 
-    return 0;
-}
+//     return 0;
+// }

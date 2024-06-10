@@ -11,6 +11,7 @@
 #include <thread>
 #include <cmath>
 #include <Python.h>
+#include </usr/local/include/python3.9/pyconfig.h>
 #include "FoodSource.h"
 
 #define onlookerSearchCoef 1.5
@@ -38,9 +39,9 @@ protected:
     // genenerates points for local search
     virtual std::vector<POINT> spiral_points(const POINT& center, const double step = 0.5) = 0;
 
-    std::vector<POINT>& localSearch(const POINT& location, double radius);
+    std::vector<POINT> localSearch(const POINT& location, double radius);
 
-    void moveToPoint(const POINT& point);
+
     void doWaggleDance(std::vector<std::shared_ptr<FoodSource>> sourcesToShare);
     void watchWaggleDance();
     bool scanNectar();
@@ -51,5 +52,6 @@ public:
     Bee(const int id);
     virtual ~Bee();
 
+    void moveToPoint(const POINT point);
     virtual void processBee() = 0;
 };

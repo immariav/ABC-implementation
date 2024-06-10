@@ -1,7 +1,6 @@
 # Файл drone_controler.py
 
 import math
-import os
 import random
 import time
 # ---------------------------------------------------------------------
@@ -109,4 +108,3 @@ class DroneController:
         
         return False
         
-    

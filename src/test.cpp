@@ -1,14 +1,11 @@
 #include <iostream>
-#include "Hive.h"
+#include "OnlookerBee.h"
+#include "EmployedBee.h"
 
-// int main()
-// {
-//      std::cout << "Running program" << std::endl;
-//     EmployedBee bee(std::to_string(1), 
-//     {-35.36043975, 149.15909315}, 
-//     10.0, 
-//     {-35.36043975, 149.15909315}, 
-//     {{-35.36043975, 149.15909315}, {-35.36337074, 149.16383840}});
+int main()
+{
+     std::cout << "Running program" << std::endl;
+    EmployedBee bee(1);
     
-//     bee.moveToPoint(bee.sock, bee.addr, {-35.36043975, 149.15909315});
-// }
+    bee.moveToPoint({-35.36043975, 149.15909315});
+}

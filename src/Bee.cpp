@@ -9,20 +9,49 @@ Bee::Bee(const int id) : id(id) {
     PyRun_SimpleString("sys.path.append('.')");
 
     // Import the module containing DroneController class
-    PyObject* pModule = PyImport_ImportModule("drone_controler");
+    PyObject* pModule = PyImport_ImportModule("drone_controller.py");
+    
+    if (!pModule) {
+        PyErr_Print();
+        throw std::runtime_error("Failed to import module");
+    }
 
     // Check if the module was imported successfully
     if (pModule) {
         // Get a reference to the DroneController class
         PyObject* pClass = PyObject_GetAttrString(pModule, "DroneController");
+       
+        if (!pClass || !PyCallable_Check(pClass)) {
+            PyErr_Print();
+            throw std::runtime_error("Failed to get class DroneController");
+        }
 
         // Check if the class was obtained successfully and is callable
         if (pClass && PyCallable_Check(pClass)) {
             // Create an instance of the DroneController class
             pDroneControllerInstance = PyObject_CallObject(pClass, NULL);
-
+            
+            if (!pDroneControllerInstance) {
+                PyErr_Print();
+                throw std::runtime_error("Failed to create instance of DroneController");
+            }
             // Check if the instance was created successfully
             if (pDroneControllerInstance) {
+                // Call the connect method of the DroneController instance
+                PyObject* pConnectMethod = PyObject_GetAttrString(pDroneControllerInstance, "connect");
+                if (pConnectMethod && PyCallable_Check(pConnectMethod)) {
+                    PyObject* pResult = PyObject_CallObject(pConnectMethod, NULL);
+                    if (!pResult) {
+                        PyErr_Print();  // Вывод подробной информации об ошибке
+                        Py_XDECREF(pConnectMethod);
+                        throw std::runtime_error("Failed to call method 'connect'");
+                    }
+                    Py_DECREF(pResult);
+                } else {
+                    PyErr_Print();  // Вывод подробной информации об ошибке
+                    Py_XDECREF(pConnectMethod);
+                    throw std::runtime_error("Failed to get method 'connect' or method is not callable");
+                }
                 // Call the arm_and_takeoff method of the DroneController instance
                 PyObject* pArmAndTakeoffMethod = PyObject_GetAttrString(pDroneControllerInstance, "arm_and_takeoff");
                 if (pArmAndTakeoffMethod && PyCallable_Check(pArmAndTakeoffMethod)) {
@@ -47,16 +76,35 @@ Bee::~Bee() {
     Py_Finalize();
 }
 
-void Bee::moveToPoint(const POINT &point)
-{
-    // Пример использования сохраненного Python-объекта для вызова метода
+void Bee::moveToPoint(const POINT point) {
     if (pDroneControllerInstance) {
+        // Получить метод goto
         PyObject* pGotoMethod = PyObject_GetAttrString(pDroneControllerInstance, "goto");
-        if (pGotoMethod && PyCallable_Check(pGotoMethod)) {
-            PyObject* pArgs = PyTuple_Pack(2, PyFloat_FromDouble(point.x), PyFloat_FromDouble(point.y));
-            PyObject_CallObject(pGotoMethod, pArgs);
-            Py_DECREF(pArgs);
+        
+        // Проверка, что метод существует и является вызываемым
+        if (!pGotoMethod || !PyCallable_Check(pGotoMethod)) {
+            PyErr_Print();
+            Py_XDECREF(pGotoMethod);
+            throw std::runtime_error("Failed to get method goto or method is not callable");
         }
+
+        // Создание аргументов для вызова метода
+        PyObject* pArgs = PyTuple_Pack(2, PyFloat_FromDouble(point.x), PyFloat_FromDouble(point.y));
+        
+        // Вызов метода goto
+        PyObject* pResult = PyObject_CallObject(pGotoMethod, pArgs);
+        
+        // Проверка на ошибки после вызова метода
+        if (!pResult) {
+            PyErr_Print();
+            Py_DECREF(pArgs);
+            Py_XDECREF(pGotoMethod);
+            throw std::runtime_error("Failed to call method goto");
+        }
+
+        // Освобождение памяти
+        Py_DECREF(pArgs);
+        Py_DECREF(pResult);
         Py_XDECREF(pGotoMethod);
     }
 }
@@ -91,7 +139,7 @@ std::vector<POINT> Bee::getActualSources(const std::string &filename)
     return coordinates;
 }
 
-std::vector<POINT>& Bee::localSearch(const POINT& location, double radius) {
+std::vector<POINT> Bee::localSearch(const POINT& location, double radius) {
     // Читаем координаты из файла
     std::vector<POINT> sources_locations = getActualSources("actualSources.txt");
 
@@ -141,3 +189,4 @@ std::vector<POINT>& Bee::localSearch(const POINT& location, double radius) {
 
     return output_points;
 }
+
