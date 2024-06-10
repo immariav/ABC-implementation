@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(/usr/local/include/python3.9)
 
 # Add the executable
 add_executable(ABC-implementation

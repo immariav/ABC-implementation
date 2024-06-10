@@ -6,16 +6,30 @@
 #include <memory>
 #include "OnlookerBee.h"
 
-OnlookerBee::OnlookerBee(const int id) : Bee(id){}
-
-OnlookerBee::~OnlookerBee() {}
-
-std::vector<POINT>& Bee::localSearch(const POINT&, double radius)
+std::vector<POINT> OnlookerBee::spiral_points(const POINT &center, const double step)
 {
-    static std::vector<POINT> points = {}; // Placeholder, replace with actual implementation
-	// move to the this->currentSource->getLocation();
+    std::vector<POINT> points;
+    const double a = radius;
+    const double b = step / (2 * M_PI); // коэффициент для управления шагом спирали
+
+    double theta = 0.0;
+    double r = a;
+
+    while (r <= onlookerSearchCoef * radius) {
+        double x = center.x + r * cos(theta);
+        double y = center.y + r * sin(theta);
+        points.push_back({x, y});
+
+        theta += step / r; // увеличиваем угол
+        r = a * exp(b * theta); // увеличиваем радиус
+    }
+
     return points;
 }
+
+OnlookerBee::OnlookerBee(const int id) : Bee(id) {}
+
+OnlookerBee::~OnlookerBee() {}
 
 void OnlookerBee::processBee()
 {

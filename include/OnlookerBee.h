@@ -4,8 +4,7 @@ class OnlookerBee : public Bee
 {
 private:
    // fields
-
-    virtual std::vector<POINT>& localSearch(const POINT&, double radius);
+   std::vector<POINT> spiral_points(const POINT& center, const double step = 0.5) override;
 
 public:
 
@@ -13,7 +12,6 @@ public:
     OnlookerBee(const int id);
     ~OnlookerBee() override;
     
-
     void processBee() override;
 };
 

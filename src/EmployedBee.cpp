@@ -7,11 +7,6 @@ EmployedBee::EmployedBee(const int id) : Bee(id){}
 
 EmployedBee::~EmployedBee() {}
 
-// void EmployedBee::addSourceToConstMemory(std::shared_ptr<FoodSource> source)
-// {
-// 	this->knownSources.push_back(source);
-// }
-
 void EmployedBee::carryNectar(std::shared_ptr<FoodSource> source, const POINT point)
 {
 	// ������ ������� �� ���������
@@ -56,10 +51,18 @@ FoodSource EmployedBee::generateNewFoodSource(const std::pair<POINT, POINT>& sea
 	return FoodSource (newPoint);
 }
 
-std::vector<POINT> &EmployedBee::localSearch(const POINT &, double radius)
+std::vector<POINT> EmployedBee::spiral_points(const POINT &center, const double step)
 {
-        static std::vector<POINT> points = {}; // Placeholder, replace with actual implementation
-	// move to the this->currentSource->getLocation();
+    std::vector<POINT> points;
+    double angle = 0;
+    double r = 0;
+    while (r <= radius) {
+        double x = center.x + r * cos(angle);
+        double y = center.y + r * sin(angle);
+        points.push_back({x, y});
+        angle += step / (r != 0 ? r : step);
+        r = angle * step / (2 * M_PI);
+    }
     return points;
 }
 
@@ -74,7 +77,7 @@ void EmployedBee::processBee()
 	this->sourcesToCheck.push_back(newSource);
 	currentSource = newSource;
 	doWaggleDance(sourcesToCheck); //newSource (сагитировал наблюдателя)
-//	moveToPoint(currentSource->getLocation()); // going to the generated point
+	moveToPoint(currentSource->getLocation()); // going to the generated point
 	
 	while (!sourcesToCheck.empty())
 	{

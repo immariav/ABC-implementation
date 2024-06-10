@@ -6,12 +6,9 @@ import random
 import time
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
-# Функция для генерации n случайных точек в пределах прямоугольника
 from dronekit import connect, VehicleMode, LocationGlobalRelative
-# Функция для вычисления расстояния между двумя точками
-def distance(point1, point2):
-    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
 
+# Функция для генерации n случайных точек в пределах прямоугольника        
 def generate_random_points(n, top_left, bottom_right):
     points = []
     for _ in range(n):
@@ -20,7 +17,7 @@ def generate_random_points(n, top_left, bottom_right):
         points.append((x, y))
     return points
 
-# Функция для чтения координат из файла
+    # Функция для чтения координат из файла
 def read_coordinates_from_file(file_path):
     coordinates = []
     with open(file_path, 'r') as file:
@@ -29,9 +26,11 @@ def read_coordinates_from_file(file_path):
             coordinates.append((x, y))
     return coordinates
 
-class DroneController:
+    # Функция для вычисления расстояния между двумя точками
+def distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
 
-    
+class DroneController:
     def __init__(self, drone_id, base_port=14550):
         self.drone_id = drone_id
         self.port = base_port + drone_id
@@ -60,7 +59,7 @@ class DroneController:
         
         while True:
             print(f"Drone{self.drone_id} Altitude: {self.vehicle.location.global_relative_frame.alt}")
-            if self.vehicle.location.global_relative_frame.alt >= target_altitude * 0.95:
+            if self.vehicle.location.global_relative_frame.alt >= target_altitude * 0.8:
                 print(f"Drone{self.drone_id} Reached target altitude")
                 break
             time.sleep(1)
@@ -79,17 +78,35 @@ class DroneController:
         self.vehicle.close()
         
     # Локальная разведка
-    def local_search(self, start_location, target_coordinates, radius):
+    def local_search(self, spiral_coordinates, sources_locations):
         output_coordinates = []
-        for target_coordinate in target_coordinates:
+        
+        for target_coordinate in spiral_coordinates:
             target_location = LocationGlobalRelative(target_coordinate[0], target_coordinate[1], 0)
-            self.vehicle.goto(target_location)
+            self.vehicle.simple_goto(target_location)
+            
             while True:
                 current_location = self.vehicle.location.global_relative_frame
                 current_coordinate = (current_location.lon, current_location.lat)
+                
                 if distance(current_coordinate, target_coordinate) < 1:
-                    output_coordinates.append(current_coordinate)
+                    for source_location in sources_locations:
+                        if distance(current_coordinate, source_location) < 1:
+                            output_coordinates.append(source_location)
                     break
+                
                 time.sleep(1)
+                
         return output_coordinates
+     
+    def scan_nectar(self, sources_locations, tolerance=10):
+        current_location = self.vehicle.location.global_relative_frame
+        current_coordinate = (current_location.lon, current_location.lat)
+        
+        for source_location in sources_locations:
+            if self.distance(current_coordinate, source_location) <= tolerance:
+                return True
+        
+        return False
+        
     
